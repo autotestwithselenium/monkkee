@@ -16,7 +16,6 @@ public class DiaryTest extends BaseTest {
                 .addEntry(textMessage)
                 .clickBackToEntriesIcon()
                 .verifyEntryMessage(textMessage, 1);
-
     }
 
     @Test
