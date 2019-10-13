@@ -29,6 +29,7 @@ public class BaseTest {
                 .checkLogin(expectedUrl);
     }
 
+
     @AfterClass
     public void closeDriver() {
         LogoutPage page = new LogoutPage(driver);
