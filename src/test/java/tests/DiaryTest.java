@@ -12,8 +12,6 @@ public class DiaryTest extends BaseTest {
     public void addTextEntry() {
         String textMessage = "Test message";
         DiaryPage page = new DiaryPage(driver);
-        int numberOfEntries = page.getNumberOfEntries();
-        log.info("Number of entries: " + numberOfEntries);
         page
                 .addEntry(textMessage)
                 .clickBackToEntriesIcon()
