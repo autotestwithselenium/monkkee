@@ -8,7 +8,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class DiaryTest extends BaseTest {
 
-    @Test
+    @Test(retryAnalyzer = MyRetryAnalyzer.class)
     public void addTextEntry() {
         String textMessage = "Test message";
         DiaryPage page = new DiaryPage(driver);
