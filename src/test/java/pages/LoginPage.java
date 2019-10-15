@@ -8,18 +8,17 @@ import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
 
 @Log4j2
-public class LoginPage {
-    WebDriver driver;
+public class LoginPage extends BasePage {
     WebDriverWait wait;
     String URL = "https://my.monkkee.com/#/";
 
     private By emailField = By.name("login");
-    private By passwordField=By.name("password");
-    private By loginButton=By.xpath("//*[@class='btn btn-primary']");
+    private By passwordField = By.name("password");
+    private By loginButton = By.xpath("//*[@class='btn btn-primary']");
 
 
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         wait = new WebDriverWait(driver, 10);
     }
 

@@ -8,16 +8,14 @@ import org.testng.Assert;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class LogoutPage {
-    WebDriver driver;
+public class LogoutPage extends BasePage {
     WebDriverWait wait;
     String expectedURLAfterLogOut = "https://my.monkkee.com/#/";
     private By emailField=By.name("login");
-
     private By logoutLink = By.xpath("//button[@class='user-menu-btn']");
 
     public LogoutPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
         this.wait = new WebDriverWait(driver, 10);
     }
 
@@ -27,7 +25,7 @@ public class LogoutPage {
         String actualURLAfterLogOut = driver.getCurrentUrl();
         log.info("Expected URL after logout: " + expectedURLAfterLogOut);
         log.info("Actual URL after logout: " + actualURLAfterLogOut);
-        Assert.assertEquals(actualURLAfterLogOut, expectedURLAfterLogOut);
+        Assert.assertEquals(actualURLAfterLogOut, expectedURLAfterLogOut, "URL should be correct after logging out");
         driver.quit();
     }
 }
