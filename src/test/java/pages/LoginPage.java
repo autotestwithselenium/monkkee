@@ -15,6 +15,7 @@ public class LoginPage extends BasePage {
     private By emailField = By.name("login");
     private By passwordField = By.name("password");
     private By loginButton = By.xpath("//*[@class='btn btn-primary']");
+    private By animationPicture = By.xpath("//img[@class='animation']");
 
 
     public LoginPage(WebDriver driver) {
@@ -28,6 +29,7 @@ public class LoginPage extends BasePage {
         driver.findElement(emailField).sendKeys(username);
         driver.findElement(passwordField).sendKeys(password);
         driver.findElement(loginButton).click();
+        animationWait(animationPicture);
         return this;
     }
 

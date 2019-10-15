@@ -1,12 +1,9 @@
 package pages;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NotFoundException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import static org.testng.AssertJUnit.assertEquals;
 
 public class EntryPage extends BasePage {
@@ -45,10 +42,21 @@ public class EntryPage extends BasePage {
         return this;
     }
 
-    public EntryPage verifyEntryWithAddedImage(String imageLink) {
-
+    public EntryPage editEntry(String message) {
+        driver.findElement(entryArea).click();
+        driver.findElement(entryArea).clear();
+        driver.findElement(entryArea).sendKeys(message);
+        wait.until(ExpectedConditions.textToBe(saveIcon, "saved"));
+        assertEquals(driver.findElement(saveIcon).getText(), "saved");
         return this;
+    }
 
+    public EntryPage verifyEntryWithAddedImage(String imageLink) {
+        try {
+            driver.findElement(addedImage);
+        } catch (Throwable ex) {
+            throw new ElementNotPresentAtPageException("Image is not added", ex);        }
+        return this;
     }
 
 

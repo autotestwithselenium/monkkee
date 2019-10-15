@@ -8,7 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import static org.testng.AssertJUnit.assertEquals;
 
 @Log4j2
-public class DiaryPage extends BasePage{
+public class DiaryPage extends BasePage {
     WebDriverWait wait;
 
     public DiaryPage(WebDriver driver) {
@@ -22,12 +22,15 @@ public class DiaryPage extends BasePage{
     private By entryLink = By.xpath("//a[@class='entry']");
     private By linkToEntriesPage = By.xpath("//*[@ng-href='#/entries']");
     private By entryCheckbox = By.xpath("//*[@class='entry-container clearfix ng-scope']//*[@class='ng-pristine ng-valid']");
-    private By chooseAllEntriesCheckbox=By.xpath("//*[@title='Select all']");
+    private By chooseAllEntriesCheckbox = By.xpath("//*[@title='Select all']");
     private By deleteIcon = By.id("delete-entries");
     private By noEntriesMessage = By.xpath("//*[@ng-show='noneMsgVisible']");
+    private By animationPicture = By.xpath("//img[@class='animation']");
+    private By deleteIconDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @id='delete-entries']");
 
     public DiaryPage clickAddEntry() {
         clickToElement(addEntryIcon);
+        animationWait(animationPicture);
         return this;
     }
 
@@ -47,14 +50,9 @@ public class DiaryPage extends BasePage{
         return this;
     }
 
-    public DiaryPage editEntry(String editMessage, int numberOfEntry) {
-//        driver.findElements(entryLink).get(numberOfEntry - 1).click();
-//        driver.findElement(entryArea).click();
-//        driver.findElement(entryArea).clear();
-//        driver.findElement(entryArea).sendKeys(editMessage);
-//
-//        wait.until(ExpectedConditions.textToBe(saveIcon, "saved"));
-//        assertEquals(driver.findElement(saveIcon).getText(), "saved");
+    public DiaryPage clickEntry(int numberOfEntry) {
+        driver.findElements(entryLink).get(numberOfEntry - 1).click();
+        animationWait(animationPicture);
         return this;
     }
 
@@ -65,12 +63,7 @@ public class DiaryPage extends BasePage{
         driver.findElement(deleteIcon).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        ExpectedConditions.not(ExpectedConditions.elementToBeClickable(deleteIcon));
-//        try {
-//            Thread.sleep(200);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        wait.until(ExpectedConditions.presenceOfElementLocated(deleteIconDisabled));
         int numberOfEntriesAfterDelete = getNumberOfEntries();
         assertEquals(numberOfEntries - 1, numberOfEntriesAfterDelete);
         return this;
@@ -82,16 +75,10 @@ public class DiaryPage extends BasePage{
         driver.findElement(deleteIcon).click();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        ExpectedConditions.not(ExpectedConditions.elementToBeClickable(deleteIcon));
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        wait.until(ExpectedConditions.presenceOfElementLocated(deleteIconDisabled));
         int numberOfEntriesAfterDelete = getNumberOfEntries();
         assertEquals(0, numberOfEntriesAfterDelete);
         assertEquals(driver.findElement(noEntriesMessage).getText(), "No entries found");
-
         return this;
     }
 
