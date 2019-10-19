@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
 
+
 @Log4j2
 public class LoginPage extends BasePage {
     WebDriverWait wait;
@@ -16,6 +17,7 @@ public class LoginPage extends BasePage {
     private By passwordField = By.name("password");
     private By loginButton = By.xpath("//*[@class='btn btn-primary']");
     private By animationPicture = By.xpath("//img[@class='animation']");
+    private By logoutLinkInDonationWindow = By.xpath("//div[@class='donation-notice-buttons']//button[@class='btn btn-primary'][1]");
 
 
     public LoginPage(WebDriver driver) {

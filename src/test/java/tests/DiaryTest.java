@@ -21,7 +21,7 @@ public class DiaryTest extends BaseTest {
         diaryPage.verifyEntryMessage(textMessage, 1);
     }
 
-    @Test()
+    @Test(retryAnalyzer = MyRetryAnalyzer.class)
     public void addEntryWithImage() {
         String imageUrl = "https://content.onliner.by/news/1100x5616/cd4ab5fe98649030080244f3c81857c3.jpeg";
         DiaryPage diaryPage = new DiaryPage(driver);
@@ -57,6 +57,21 @@ public class DiaryTest extends BaseTest {
     }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    public void printEntry() {
+        String textMessage = "Test message";
+        DiaryPage diaryPage = new DiaryPage(driver);
+        EntryPage entryPage = new EntryPage(driver);
+        diaryPage.clickAddEntry();
+        entryPage
+                .addEntry(textMessage)
+                .clickBackToEntriesIcon();
+        diaryPage
+                .verifyEntryMessage(textMessage, 1)
+                .printEntry(1);
+    }
+
+
+    @Test(retryAnalyzer = MyRetryAnalyzer.class)
     public void deleteEntry() {
         String textMessage = "Test message";
         DiaryPage diaryPage = new DiaryPage(driver);
@@ -89,6 +104,70 @@ public class DiaryTest extends BaseTest {
         diaryPage
                 .verifyEntryMessage(textMessage, 1)
                 .deleteAllEntries();
-
     }
+
+    @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    public void addTag() {
+        String textMessage = "Test message";
+        String tagName = "testTag";
+        DiaryPage diaryPage = new DiaryPage(driver);
+        EntryPage entryPage = new EntryPage(driver);
+        diaryPage.clickAddEntry();
+        entryPage.addEntry(textMessage)
+                .addNewTag(tagName)
+                .clickBackToEntriesIcon();
+        diaryPage.verifyTagInEntry(tagName);
+    }
+
+
+    @Test
+    public void openOlderEntry() {
+        String textMessageFirst = "Test message First";
+        String textMessageSecond = "Test message Second";
+        DiaryPage diaryPage = new DiaryPage(driver);
+        EntryPage entryPage = new EntryPage(driver);
+        diaryPage.clickAddEntry();
+        entryPage
+                .addEntry(textMessageFirst)
+                .clickBackToEntriesIcon();
+        diaryPage.verifyEntryMessage(textMessageFirst, 1);
+        diaryPage.clickAddEntry();
+        entryPage
+                .addEntry(textMessageSecond)
+                .clickBackToEntriesIcon();
+        diaryPage.verifyEntryMessage(textMessageSecond, 1);
+        diaryPage.clickEntry(1);
+        entryPage
+                .openOlderEntry(textMessageFirst)
+                .clickBackToEntriesIcon();
+    }
+
+    @Test
+    public void openNewerEntry() {
+        String textMessageFirst = "Test message First";
+        String textMessageSecond = "Test message Second";
+        DiaryPage diaryPage = new DiaryPage(driver);
+        EntryPage entryPage = new EntryPage(driver);
+        diaryPage.clickAddEntry();
+        entryPage
+                .addEntry(textMessageFirst)
+                .clickBackToEntriesIcon();
+        diaryPage.verifyEntryMessage(textMessageFirst, 1);
+        diaryPage.clickAddEntry();
+        entryPage
+                .addEntry(textMessageSecond)
+                .clickBackToEntriesIcon();
+        diaryPage.verifyEntryMessage(textMessageSecond, 1);
+        diaryPage.clickEntry(2);
+        entryPage
+                .openNewerEntry(textMessageSecond)
+                .clickBackToEntriesIcon();
+    }
+
+    @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    public void openDonationPage() {
+        DiaryPage diaryPage = new DiaryPage(driver);
+        diaryPage.clickDonationButton();
+    }
+
 }

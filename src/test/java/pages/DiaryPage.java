@@ -5,6 +5,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import lombok.extern.log4j.Log4j2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.testng.AssertJUnit.assertEquals;
 
 @Log4j2
@@ -21,12 +24,16 @@ public class DiaryPage extends BasePage {
     private By entryBodyMessage = By.xpath("//*[@class='entry-container clearfix ng-scope']//*[@ng-bind-html='entry.body']");
     private By entryLink = By.xpath("//a[@class='entry']");
     private By linkToEntriesPage = By.xpath("//*[@ng-href='#/entries']");
-    private By entryCheckbox = By.xpath("//*[@class='entry-container clearfix ng-scope']//*[@class='ng-pristine ng-valid']");
+    private By entryCheckboxNotMarked = By.xpath("//*[@class='entry-container clearfix ng-scope']//*[@class='ng-pristine ng-valid']");
+    private By entryCheckboxMarked = By.xpath("//*[@class='entry-container clearfix ng-scope']//*[@class='ng-valid ng-dirty']");
     private By chooseAllEntriesCheckbox = By.xpath("//*[@title='Select all']");
     private By deleteIcon = By.id("delete-entries");
     private By noEntriesMessage = By.xpath("//*[@ng-show='noneMsgVisible']");
     private By animationPicture = By.xpath("//img[@class='animation']");
     private By deleteIconDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @id='delete-entries']");
+    private By printIcon = By.xpath("//*[@title='Print selected entries']");
+    private By printIconDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @title='Print selected entries']");
+    private By donationButton = By.xpath("//a[@class='donate-button ng-scope' and text()='Feed the monkkee']");
 
     public DiaryPage clickAddEntry() {
         clickToElement(addEntryIcon);
@@ -58,7 +65,7 @@ public class DiaryPage extends BasePage {
 
     public DiaryPage deleteEntry(int numberOfEntry) {
         int numberOfEntries = getNumberOfEntries();
-        driver.findElements(entryCheckbox).get(numberOfEntry - 1).click();
+        driver.findElements(entryCheckboxNotMarked).get(numberOfEntry - 1).click();
         wait.until(ExpectedConditions.elementToBeClickable(deleteIcon));
         driver.findElement(deleteIcon).click();
         Alert alert = driver.switchTo().alert();
@@ -82,4 +89,43 @@ public class DiaryPage extends BasePage {
         return this;
     }
 
+
+    public DiaryPage verifyTagInEntry(String tagNameValue) {
+        try {
+            driver.findElement(By.xpath(String.format("//*[@class='entry-container clearfix ng-scope']//span[contains(text(), %s)]", tagNameValue)));
+        } catch (Throwable ex) {
+            throw new ElementNotPresentAtPageException("Tag is not added for entry", ex);
+        }
+        return this;
+    }
+
+
+    public DiaryPage printEntry(int numberOfEntry) {
+        String expectedUrl="https://my.monkkee.com/print_template";
+        String winHandleBefore = driver.getWindowHandle();
+        driver.findElements(entryCheckboxNotMarked).get(numberOfEntry - 1).click();
+        wait.until(ExpectedConditions.elementToBeClickable(printIcon));
+        driver.findElement(printIcon).click();
+        for (String winHandle : driver.getWindowHandles()) {
+            driver.switchTo().window(winHandle);
+        }
+        log.info("Current URL in print Page: " + driver.getCurrentUrl());
+        assertEquals(expectedUrl, driver.getCurrentUrl());
+        driver.close();
+        driver.switchTo().window(winHandleBefore);
+        driver.findElements(entryCheckboxMarked).get(numberOfEntry - 1).click();
+        return this;
+    }
+
+    public DiaryPage clickDonationButton() {
+        String expectedUrl = "https://www.monkkee.com/en/support-us-with-a-donation/";
+        driver.findElement(donationButton).click();
+        ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+        driver.switchTo().window(tabs.get(1));
+        log.info("Current URL in donation Page: " + driver.getCurrentUrl());
+        assertEquals(expectedUrl, driver.getCurrentUrl());
+        driver.close();
+        driver.switchTo().window(tabs.get(0));
+        return this;
+    }
 }
