@@ -36,10 +36,8 @@ public class LogoutPage extends BasePage {
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(emailField));
 
-            // driver.findElement(logoutLinkInDonationWindow).click();
         } catch (Throwable ex) {
             driver.findElement(logoutLinkInDonationWindow).click();
-            //log.info("f");
         }
         wait.until(ExpectedConditions.presenceOfElementLocated(emailField));
 
