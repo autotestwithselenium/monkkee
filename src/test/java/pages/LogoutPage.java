@@ -32,7 +32,6 @@ public class LogoutPage extends BasePage {
         //   }
         //driver.findElement(logoutLink).click();
 
-
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(emailField));
 
