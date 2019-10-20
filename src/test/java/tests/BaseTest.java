@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
     WebDriver driver;
-    String loginName = "tms1@mailinator.com";
+    String loginName = "tms5@mailinator.com";
     String loginPassword = "password01";
     String expectedUrl = "https://my.monkkee.com/#/entries";
 
