@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 import static org.testng.AssertJUnit.assertEquals;
 
 @Log4j2
@@ -31,6 +33,12 @@ public class EntryPage extends BasePage {
     private By openOlderEntryLinkEnabled = By.xpath("//a[@class='btn btn-primary' and @title='Older']");
     private By openNewerEntryLinkEnabled = By.xpath("//a[@class='btn btn-primary' and @title='Newer']");
     private By openNewerEntryLinkDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @title='Newer']");
+    private By changeDateAndTimeLink = By.xpath("//a[@title='Change entry date/time']");
+    private By changeDateField = By.id("date");
+    private By changeTimeField = By.id("time");
+    private By saveChangeDateAndTimeButton = By.xpath("//button[@ng-click='changeDate()']");
+    private By daysInCalendar = By.xpath("//div[@class='datepicker-days datepicker-mode']//table[@class=' table-condensed']//td");
+    private By dateAndTimeField = By.xpath("//time");
 
     public EntryPage addEntry(String message) {
         wait.until(ExpectedConditions.elementToBeClickable(entryArea));
@@ -98,6 +106,28 @@ public class EntryPage extends BasePage {
         driver.findElement(openNewerEntryLinkEnabled).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(openNewerEntryLinkDisabled));
         assertEquals(messageText, driver.findElement(entryArea).getText());
+        return this;
+    }
+
+    public EntryPage changeDateAndTimeInEntry(String dayValue, String timeValue, String expectedDateAndTime) {
+        driver.findElement(changeDateAndTimeLink).click();
+        driver.findElement(changeDateField).click();
+
+        List<WebElement> allDates = driver.findElements(daysInCalendar);
+        for (WebElement ele : allDates) {
+            String date = ele.getText();
+            if (date.equalsIgnoreCase(dayValue)) {
+                ele.click();
+                break;
+            }
+        }
+
+
+        driver.findElement(changeTimeField).click();
+        driver.findElement(changeTimeField).clear();
+        driver.findElement(changeTimeField).sendKeys(timeValue);
+        driver.findElement(saveChangeDateAndTimeButton).click();
+        assertEquals(expectedDateAndTime, driver.findElement(dateAndTimeField).getText());
         return this;
     }
 

@@ -32,8 +32,8 @@ public class BaseTest {
     }
 
    // @AfterClass
-    @AfterMethod
-    public void closeDriver() {
-        new LogoutPage(driver).logOut();
-    }
+   @AfterMethod
+   public void closeDriver() {
+       new LogoutPage(driver).logOut();
+   }
 }

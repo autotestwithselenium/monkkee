@@ -13,7 +13,7 @@ Checklist:
 12. search entry by tags
 13. reset search results
 14. choose entries by calendar date
-15. change date/time in entry
+15. change date/time in entry +
 16. choose older entry from opened entry +
 17. choose newer entry from opened entry +
 18. open donations page "Feed the monkkey" +

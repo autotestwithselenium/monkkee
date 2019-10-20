@@ -164,6 +164,27 @@ public class DiaryTest extends BaseTest {
                 .clickBackToEntriesIcon();
     }
 
+    @Test
+    public void changeDateAndTimeInEntry() {
+        String textMessage = "Test message";
+        String dayValue ="1";
+        String timeValue ="01:01 AM";
+        String expectedDateAndTime ="Tue, 1 Oct. 2019 01:01 AM";
+        DiaryPage diaryPage = new DiaryPage(driver);
+        EntryPage entryPage = new EntryPage(driver);
+        diaryPage.clickAddEntry();
+        entryPage
+                .addEntry(textMessage)
+                .clickBackToEntriesIcon();
+        diaryPage
+                .verifyEntryMessage(textMessage, 1)
+                .clickEntry(1);
+        entryPage
+                .changeDateAndTimeInEntry(dayValue, timeValue, expectedDateAndTime)
+                .clickBackToEntriesIcon();
+    }
+
+
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
     public void openDonationPage() {
         DiaryPage diaryPage = new DiaryPage(driver);
