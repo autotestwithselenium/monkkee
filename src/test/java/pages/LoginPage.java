@@ -6,12 +6,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
-
+import utils.ConfigurationFileManager;
 
 @Log4j2
 public class LoginPage extends BasePage {
     WebDriverWait wait;
-    String URL = "https://my.monkkee.com/#/";
+    String URL = ConfigurationFileManager.getInstance().getUrlBeforeLogin();
 
     private By emailField = By.name("login");
     private By passwordField = By.name("password");

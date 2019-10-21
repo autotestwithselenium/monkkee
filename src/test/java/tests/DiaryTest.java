@@ -36,7 +36,7 @@ public class DiaryTest extends BaseTest {
                 .clickBackToEntriesIcon();
     }
 
-    @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    @Test(retryAnalyzer = MyRetryAnalyzer.class, groups = {"dataDrivenTest"})
     public void editEntry() {
         String textMessage = "Test message";
         String editedTextMessage = "Edited Test message";

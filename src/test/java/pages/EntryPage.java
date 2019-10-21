@@ -1,6 +1,7 @@
 package pages;
 
 import lombok.extern.log4j.Log4j2;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,15 +14,15 @@ import static org.testng.AssertJUnit.assertEquals;
 
 @Log4j2
 public class EntryPage extends BasePage {
-    WebDriverWait wait;
 
     public EntryPage(WebDriver driver) {
         super(driver);
-        this.wait = new WebDriverWait(driver, 10);
     }
 
     private By entryArea = By.xpath("//*[@id='editable']");
-    private By saveIcon = By.xpath("//*[@class='cke_combo_text cke_combo_inlinelabel cke_savetoggle_text']");
+    private By saveIconDisabled = By.xpath("//*[@class='cke_combo_text cke_combo_inlinelabel cke_savetoggle_text']");
+    private By saveIconEnabled = By.xpath("//a[@class='cke_button cke_button__savetoggle cke_button_off']");
+
     private By backToEntriesIcon = By.id("back-to-overview");
     private By addEntryIcon = By.xpath("//*[@title='Create an entry']");
     private By addImageIcon = By.xpath("//*[@title='Image']");
@@ -41,11 +42,15 @@ public class EntryPage extends BasePage {
     private By dateAndTimeField = By.xpath("//time");
 
     public EntryPage addEntry(String message) {
-        wait.until(ExpectedConditions.elementToBeClickable(entryArea));
+        waitClickable(entryArea);
         driver.findElement(entryArea).click();
         driver.findElement(entryArea).sendKeys(message);
-        wait.until(ExpectedConditions.textToBe(saveIcon, "saved"));
-        assertEquals(driver.findElement(saveIcon).getText(), "saved");
+        try {
+            waitPresenceOfElementLocated(saveIconEnabled);
+        } catch (Throwable ex) {
+            waitTextToBe(saveIconDisabled, "saved");
+            assertEquals(driver.findElement(saveIconDisabled).getText(), "saved");
+        }
         return this;
     }
 
@@ -54,8 +59,8 @@ public class EntryPage extends BasePage {
         driver.findElement(imageUrlInputField).click();
         driver.findElement(imageUrlInputField).sendKeys(imageLink);
         driver.findElement(confirmButtonInImageForm).click();
-        wait.until(ExpectedConditions.textToBe(saveIcon, "saved"));
-        assertEquals(driver.findElement(saveIcon).getText(), "saved");
+        wait.until(ExpectedConditions.textToBe(saveIconDisabled, "saved"));
+        assertEquals(driver.findElement(saveIconDisabled).getText(), "saved");
         return this;
     }
 
@@ -63,8 +68,8 @@ public class EntryPage extends BasePage {
         driver.findElement(entryArea).click();
         driver.findElement(entryArea).clear();
         driver.findElement(entryArea).sendKeys(message);
-        wait.until(ExpectedConditions.textToBe(saveIcon, "saved"));
-        assertEquals(driver.findElement(saveIcon).getText(), "saved");
+        wait.until(ExpectedConditions.textToBe(saveIconDisabled, "saved"));
+        assertEquals(driver.findElement(saveIconDisabled).getText(), "saved");
         return this;
     }
 
@@ -82,7 +87,7 @@ public class EntryPage extends BasePage {
     public EntryPage clickBackToEntriesIcon() {
         driver.findElement(backToEntriesIcon).click();
         animationWait(animationPicture);
-        wait.until(ExpectedConditions.presenceOfElementLocated(addEntryIcon));
+        waitPresenceOfElementLocated(addEntryIcon);
         return this;
     }
 
@@ -121,7 +126,6 @@ public class EntryPage extends BasePage {
                 break;
             }
         }
-
 
         driver.findElement(changeTimeField).click();
         driver.findElement(changeTimeField).clear();

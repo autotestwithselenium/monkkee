@@ -24,10 +24,10 @@ Checklist:
 //TODO
 
 1. Remove excessive System.setProperty +
-2. Read login/pass/url from property file
+2. Read login/pass/url from property file +
 3. Add descriptions into tests
 4. Add reasons into assertions
-5. Move WebDriverWait into BasePage
+5. Move WebDriverWait into BasePage + partly
 6. User 'Reformat code'
-7. Add wrapper for click
-8. Add testng.xml for parallel run
+7. Add wrapper for click +
+8. Add testng.xml for parallel run + partly

@@ -2,25 +2,19 @@ package pages;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import lombok.extern.log4j.Log4j2;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.testng.AssertJUnit.assertEquals;
 
 @Log4j2
 public class DiaryPage extends BasePage {
-    WebDriverWait wait;
 
     public DiaryPage(WebDriver driver) {
         super(driver);
-        this.wait = new WebDriverWait(driver, 10);
     }
 
     private By addEntryIcon = By.xpath("//*[@title='Create an entry']");
-    private By backToEntriesIcon = By.id("back-to-overview");
     private By entryBodyMessage = By.xpath("//*[@class='entry-container clearfix ng-scope']//*[@ng-bind-html='entry.body']");
     private By entryLink = By.xpath("//a[@class='entry']");
     private By linkToEntriesPage = By.xpath("//*[@ng-href='#/entries']");
@@ -32,17 +26,11 @@ public class DiaryPage extends BasePage {
     private By animationPicture = By.xpath("//img[@class='animation']");
     private By deleteIconDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @id='delete-entries']");
     private By printIcon = By.xpath("//*[@title='Print selected entries']");
-    private By printIconDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @title='Print selected entries']");
     private By donationButton = By.xpath("//a[@class='donate-button ng-scope' and text()='Feed the monkkee']");
 
     public DiaryPage clickAddEntry() {
         clickToElement(addEntryIcon);
         animationWait(animationPicture);
-        return this;
-    }
-
-    public DiaryPage openEntriesPage() {
-        clickToElement(linkToEntriesPage);
         return this;
     }
 
