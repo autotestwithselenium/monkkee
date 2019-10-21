@@ -11,7 +11,7 @@ import utils.ConfigurationFileManager;
 @Log4j2
 public class LoginPage extends BasePage {
     WebDriverWait wait;
-    String URL = "https://my.monkkee.com/#/";//ConfigurationFileManager.getInstance().getUrlBeforeLogin();
+    String URL = ConfigurationFileManager.getInstance().getUrlBeforeLogin();
 
     private By emailField = By.name("login");
     private By passwordField = By.name("password");

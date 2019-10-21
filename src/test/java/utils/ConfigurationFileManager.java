@@ -8,7 +8,8 @@ public class ConfigurationFileManager {
 
     private static ConfigurationFileManager instance;
     private static final Object lock = new Object();
-    private static String propertyFilePath = System.getProperty("user.dir") + "\\src\\test\\resources\\configuration.properties";
+    private static String propertyFilePath = "src/test/resources/configuration.properties";
+
     private static String login;
     private static String password;
     private static String urlBeforeLogin;
