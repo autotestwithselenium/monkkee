@@ -4,6 +4,9 @@ import org.testng.annotations.Test;
 import pages.DiaryPage;
 import lombok.extern.log4j.Log4j2;
 import pages.EntryPage;
+import pages.TagsPage;
+
+import static com.sun.javafx.fxml.expression.Expression.not;
 
 
 @Log4j2
@@ -106,19 +109,6 @@ public class DiaryTest extends BaseTest {
                 .deleteAllEntries();
     }
 
-    @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void addTag() {
-        String textMessage = "Test message";
-        String tagName = "testTag";
-        DiaryPage diaryPage = new DiaryPage(driver);
-        EntryPage entryPage = new EntryPage(driver);
-        diaryPage.clickAddEntry();
-        entryPage.addEntry(textMessage)
-                .addNewTag(tagName)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyTagInEntry(tagName);
-    }
-
 
     @Test
     public void openOlderEntry() {
@@ -167,9 +157,9 @@ public class DiaryTest extends BaseTest {
     @Test
     public void changeDateAndTimeInEntry() {
         String textMessage = "Test message";
-        String dayValue ="1";
-        String timeValue ="01:01 AM";
-        String expectedDateAndTime ="Tue, 1 Oct. 2019 01:01 AM";
+        String dayValue = "1";
+        String timeValue = "01:01 AM";
+        String expectedDateAndTime = "Tue, 1 Oct. 2019 01:01 AM";
         DiaryPage diaryPage = new DiaryPage(driver);
         EntryPage entryPage = new EntryPage(driver);
         diaryPage.clickAddEntry();
@@ -184,6 +174,13 @@ public class DiaryTest extends BaseTest {
                 .clickBackToEntriesIcon();
     }
 
+    @Test
+    public void manageTags() {
+        DiaryPage diaryPage = new DiaryPage(driver);
+        diaryPage.openTagsList();
+        TagsPage tagsPage = new TagsPage(driver);
+        tagsPage.checkTagPresenseInList("testTag");
+    }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
     public void openDonationPage() {

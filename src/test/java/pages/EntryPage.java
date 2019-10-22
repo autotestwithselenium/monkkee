@@ -6,11 +6,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
+import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertFalse;
 
 @Log4j2
 public class EntryPage extends BasePage {
@@ -40,6 +43,9 @@ public class EntryPage extends BasePage {
     private By saveChangeDateAndTimeButton = By.xpath("//button[@ng-click='changeDate()']");
     private By daysInCalendar = By.xpath("//div[@class='datepicker-days datepicker-mode']//table[@class=' table-condensed']//td");
     private By dateAndTimeField = By.xpath("//time");
+    private By selectTagField = By.xpath("//select[@id='select-tag']");
+    private By confirmAddingExistingTagButton = By.xpath("//button[@id='assign-existing-tag']");
+    private By assignedTagToEntry = By.xpath("//span[@ng-repeat='assignedTag in assignedTags']/a");
 
     public EntryPage addEntry(String message) {
         waitClickable(entryArea);
@@ -97,6 +103,7 @@ public class EntryPage extends BasePage {
         driver.findElement(createNewTagButton).click();
         WebElement tagElement = driver.findElement(By.linkText(tagName));
         wait.until(ExpectedConditions.visibilityOf(tagElement));
+        assertTrue(checkIfTagIsAddedInEntry(tagName));
         return this;
     }
 
@@ -132,6 +139,42 @@ public class EntryPage extends BasePage {
         driver.findElement(changeTimeField).sendKeys(timeValue);
         driver.findElement(saveChangeDateAndTimeButton).click();
         assertEquals(expectedDateAndTime, driver.findElement(dateAndTimeField).getText());
+        return this;
+    }
+
+
+    public EntryPage chooseExistingTagFromList(String tagName) {
+        Select tagsList = new Select(driver.findElement(selectTagField));
+        tagsList.selectByVisibleText(tagName);
+        driver.findElement(confirmAddingExistingTagButton).click();
+        assertTrue(checkIfTagIsAddedInEntry(tagName));
+        return this;
+    }
+
+
+    public boolean checkIfTagIsAddedInEntry(String tagName) {
+        boolean assignedTag = false;
+        List<WebElement> assignedToEntryTags = driver.findElements(assignedTagToEntry);
+        for (WebElement tag : assignedToEntryTags) {
+            String tagNameValue = tag.getText();
+            if (tagNameValue.equalsIgnoreCase(tagName)) {
+                assignedTag = true;
+                break;
+            }
+        }
+        return assignedTag;
+    }
+
+    public EntryPage removeTagFromEntry(String tagName){
+        List<WebElement> assignedToEntryTags = driver.findElements(assignedTagToEntry);
+        for (WebElement tag : assignedToEntryTags) {
+            String tagNameValue = tag.getText();
+            if (tagNameValue.equalsIgnoreCase(tagName)) {
+                tag.click();
+                break;
+            }
+        }
+        assertFalse(checkIfTagIsAddedInEntry(tagName));
         return this;
     }
 

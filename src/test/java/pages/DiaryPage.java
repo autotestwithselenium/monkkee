@@ -27,6 +27,7 @@ public class DiaryPage extends BasePage {
     private By deleteIconDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @id='delete-entries']");
     private By printIcon = By.xpath("//*[@title='Print selected entries']");
     private By donationButton = By.xpath("//a[@class='donate-button ng-scope' and text()='Feed the monkkee']");
+    private By manageTagsLink = By.xpath("//a[text() = 'Manage tags']");
 
     public DiaryPage clickAddEntry() {
         clickToElement(addEntryIcon);
@@ -114,6 +115,12 @@ public class DiaryPage extends BasePage {
         assertEquals(expectedUrl, driver.getCurrentUrl());
         driver.close();
         driver.switchTo().window(tabs.get(0));
+        return this;
+    }
+
+    public DiaryPage openTagsList(){
+        driver.findElement(manageTagsLink).click();
+        animationWait(animationPicture);
         return this;
     }
 }
