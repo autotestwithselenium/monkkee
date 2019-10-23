@@ -37,4 +37,8 @@ public class BasePage {
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
 
     }
+
+    public void waitInvisibilityOfElementLocated(By locator){
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+    }
 }

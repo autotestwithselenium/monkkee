@@ -30,8 +30,9 @@ public class DiaryPage extends BasePage {
     private By donationButton = By.xpath("//a[@class='donate-button ng-scope' and text()='Feed the monkkee']");
     private By manageTagsLink = By.xpath("//a[text() = 'Manage tags']");
     private By searchField = By.xpath("//input[@placeholder='Search']");
-    private By searchTextLabel = By.xpath("//span[@class='ng-binding search-parameter']");
+    private By searchFilterLabel = By.xpath("//span[@class='ng-binding search-parameter']");
     private By searchButton = By.xpath("//button[@title='Search']");
+    private By resetLink = By.xpath("//a[text()='reset']");
 
     public DiaryPage clickAddEntry() {
         clickToElement(addEntryIcon);
@@ -133,9 +134,26 @@ public class DiaryPage extends BasePage {
         driver.findElement(searchField).clear();
         driver.findElement(searchField).sendKeys(textForSearch);
         driver.findElement(searchButton).click();
-        waitTextToBe(searchTextLabel, textForSearch);
+        waitTextToBe(searchFilterLabel, textForSearch);
         assertEquals(getNumberOfEntries(), expectedNumberOfEntries);
+        return this;
+    }
+
+
+    public DiaryPage searchEntryByTag(String tagForSearch, int expectedNumberOfEntries)
+    {
+        driver.findElement(By.xpath(String.format("//a[contains(text(), '%s')]", tagForSearch))).click();
+        waitTextToBe(searchFilterLabel, tagForSearch);
+        assertEquals(getNumberOfEntries(), expectedNumberOfEntries);
+        return this;
+    }
+
+    public DiaryPage resetSearchResults(int expectedNumberOfEntriesAfterReset) {
+        driver.findElement(resetLink).click();
+        waitInvisibilityOfElementLocated(resetLink);
+        assertEquals(getNumberOfEntries(), expectedNumberOfEntriesAfterReset);
         return this;
 
     }
+
 }

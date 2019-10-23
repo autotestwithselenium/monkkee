@@ -34,12 +34,10 @@ public class LogoutPage extends BasePage {
 
         try {
             wait.until(ExpectedConditions.presenceOfElementLocated(emailField));
-
         } catch (Throwable ex) {
             driver.findElement(logoutLinkInDonationWindow).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(emailField));
         }
-        wait.until(ExpectedConditions.presenceOfElementLocated(emailField));
-
         String actualURLAfterLogOut = driver.getCurrentUrl();
         log.info("Expected URL after logout: " + expectedURLAfterLogOut);
         log.info("Actual URL after logout: " + actualURLAfterLogOut);

@@ -18,7 +18,7 @@ public class LoginPage extends BasePage {
     private By loginButton = By.xpath("//*[@class='btn btn-primary']");
     private By animationPicture = By.xpath("//img[@class='animation']");
     private By logoutLinkInDonationWindow = By.xpath("//div[@class='donation-notice-buttons']//button[@class='btn btn-primary'][1]");
-
+    private By cancelDonationButton = By.xpath("//button[@custom-modal-close='login()']");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -42,7 +42,12 @@ public class LoginPage extends BasePage {
     }
 
     public void checkLogin(String expectedURL) {
-        wait.until(ExpectedConditions.urlToBe(expectedURL));
+        try {
+            wait.until(ExpectedConditions.urlToBe(expectedURL));
+        } catch (Throwable ex) {
+            driver.findElement(cancelDonationButton).click();
+            wait.until(ExpectedConditions.urlToBe(expectedURL));
+        }
         Assert.assertEquals(driver.getCurrentUrl(), expectedURL);
     }
 }
