@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import lombok.extern.log4j.Log4j2;
+
 import java.util.ArrayList;
 
 import static org.testng.AssertJUnit.assertEquals;
@@ -28,6 +29,9 @@ public class DiaryPage extends BasePage {
     private By printIcon = By.xpath("//*[@title='Print selected entries']");
     private By donationButton = By.xpath("//a[@class='donate-button ng-scope' and text()='Feed the monkkee']");
     private By manageTagsLink = By.xpath("//a[text() = 'Manage tags']");
+    private By searchField = By.xpath("//input[@placeholder='Search']");
+    private By searchTextLabel = By.xpath("//span[@class='ng-binding search-parameter']");
+    private By searchButton = By.xpath("//button[@title='Search']");
 
     public DiaryPage clickAddEntry() {
         clickToElement(addEntryIcon);
@@ -90,7 +94,7 @@ public class DiaryPage extends BasePage {
 
 
     public DiaryPage printEntry(int numberOfEntry) {
-        String expectedUrl="https://my.monkkee.com/print_template";
+        String expectedUrl = "https://my.monkkee.com/print_template";
         String winHandleBefore = driver.getWindowHandle();
         driver.findElements(entryCheckboxNotMarked).get(numberOfEntry - 1).click();
         wait.until(ExpectedConditions.elementToBeClickable(printIcon));
@@ -118,9 +122,20 @@ public class DiaryPage extends BasePage {
         return this;
     }
 
-    public DiaryPage openTagsList(){
+    public DiaryPage openTagsList() {
         driver.findElement(manageTagsLink).click();
         animationWait(animationPicture);
         return this;
+    }
+
+    public DiaryPage searchEntryByText(String textForSearch, int expectedNumberOfEntries) {
+        driver.findElement(searchField).click();
+        driver.findElement(searchField).clear();
+        driver.findElement(searchField).sendKeys(textForSearch);
+        driver.findElement(searchButton).click();
+        waitTextToBe(searchTextLabel, textForSearch);
+        assertEquals(getNumberOfEntries(), expectedNumberOfEntries);
+        return this;
+
     }
 }

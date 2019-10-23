@@ -29,7 +29,7 @@ public class DiaryEntryTagsTest extends BaseTest {
         diaryPage.verifyTagInEntry(tagName);
     }
 
-    @Test
+    @Test(retryAnalyzer = MyRetryAnalyzer.class)
     public void chooseExistingTagInEntry() {
         String textMessage = "Test message";
         String tagName = "testTag1";
@@ -54,7 +54,7 @@ public class DiaryEntryTagsTest extends BaseTest {
         diaryPage.verifyTagInEntry(tagName);
     }
 
-    @Test
+    @Test(retryAnalyzer = MyRetryAnalyzer.class)
     public void removeTagFromEntry() {
         String textMessage = "Test message";
         String tagName = "testTag";

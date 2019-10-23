@@ -48,6 +48,7 @@ public class EntryPage extends BasePage {
     private By assignedTagToEntry = By.xpath("//span[@ng-repeat='assignedTag in assignedTags']/a");
 
     public EntryPage addEntry(String message) {
+        waitPresenceOfElementLocated(saveIconDisabled);
         waitClickable(entryArea);
         driver.findElement(entryArea).click();
         driver.findElement(entryArea).sendKeys(message);
