@@ -46,6 +46,7 @@ public class LoginPage extends BasePage {
             wait.until(ExpectedConditions.urlToBe(expectedURL));
         } catch (Throwable ex) {
             driver.findElement(cancelDonationButton).click();
+            waitInvisibilityOfElementLocated(cancelDonationButton);
             wait.until(ExpectedConditions.urlToBe(expectedURL));
         }
         Assert.assertEquals(driver.getCurrentUrl(), expectedURL);
