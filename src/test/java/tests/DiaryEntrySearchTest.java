@@ -83,7 +83,6 @@ public class DiaryEntrySearchTest extends BaseTest {
         diaryPage.verifyTagInEntry(tagNameSecond);
         diaryPage.searchEntryByTag(tagNameFirst, 1);
         diaryPage.searchEntryByTag(tagNameSecond, 2);
-
     }
 
 
@@ -114,4 +113,42 @@ public class DiaryEntrySearchTest extends BaseTest {
 
     }
 
+    @Test
+    public void searchEntryByDate() {
+        int numberOfEntries;
+        String textMessage = "Test message";
+        String dayValueFirst = "1";
+        String dayValueSecond = "23";
+        DiaryPage diaryPage = new DiaryPage(driver);
+        EntryPage entryPage = new EntryPage(driver);
+        numberOfEntries = diaryPage.getNumberOfEntries();
+        if (numberOfEntries > 0) {
+            diaryPage.deleteAllEntries();
+        }
+        diaryPage.clickAddEntry();
+        entryPage
+                .addEntry(textMessage)
+                .changeDateInEntry(dayValueFirst)
+                .clickBackToEntriesIcon();
+        diaryPage
+                .verifyEntryMessage(textMessage, 1)
+                .clickAddEntry();
+        entryPage
+                .addEntry(textMessage)
+                .changeDateInEntry(dayValueSecond)
+                .clickBackToEntriesIcon();
+        diaryPage
+                .verifyEntryMessage(textMessage, 1)
+                .clickAddEntry();
+        entryPage
+                .addEntry(textMessage)
+                .changeDateInEntry(dayValueSecond)
+                .clickBackToEntriesIcon();
+        diaryPage
+                .verifyEntryMessage(textMessage, 1)
+                .searchEntryByDate(dayValueFirst, 1)
+                .resetSearchResults(3)
+                .searchEntryByDate(dayValueSecond, 2)
+                .resetSearchResults(3);
+    }
 }

@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.testng.AssertJUnit.assertEquals;
 
@@ -33,13 +34,14 @@ public class DiaryPage extends BasePage {
     private By searchFilterLabel = By.xpath("//span[@class='ng-binding search-parameter']");
     private By searchButton = By.xpath("//button[@title='Search']");
     private By resetLink = By.xpath("//a[text()='reset']");
+    private By changeDateAndTimeLink = By.xpath("//input[@placeholder='Select date']");
+    private By daysInCalendar = By.xpath("//div[@class='datepicker-days datepicker-mode']//table[@class=' table-condensed']//td");
 
     public DiaryPage clickAddEntry() {
         clickToElement(addEntryIcon);
         animationWait(animationPicture);
         return this;
     }
-
 
     public int getNumberOfEntries() {
         return driver.findElements(entryBodyMessage).size();
@@ -140,13 +142,30 @@ public class DiaryPage extends BasePage {
     }
 
 
-    public DiaryPage searchEntryByTag(String tagForSearch, int expectedNumberOfEntries)
-    {
+    public DiaryPage searchEntryByTag(String tagForSearch, int expectedNumberOfEntries) {
         driver.findElement(By.xpath(String.format("//a[contains(text(), '%s')]", tagForSearch))).click();
         waitTextToBe(searchFilterLabel, tagForSearch);
         assertEquals(getNumberOfEntries(), expectedNumberOfEntries);
         return this;
     }
+
+    public DiaryPage searchEntryByDate(String dayValue, int expectedNumberOfEntries) {
+        driver.findElement(changeDateAndTimeLink).click();
+
+        List<WebElement> allDates = driver.findElements(daysInCalendar);
+        for (WebElement ele : allDates) {
+            String date = ele.getText();
+            if (date.equalsIgnoreCase(dayValue)) {
+                ele.click();
+                break;
+            }
+        }
+        animationWait(animationPicture);
+        waitPresenceOfElementLocated(resetLink);
+        assertEquals(getNumberOfEntries(), expectedNumberOfEntries);
+        return this;
+    }
+
 
     public DiaryPage resetSearchResults(int expectedNumberOfEntriesAfterReset) {
         driver.findElement(resetLink).click();

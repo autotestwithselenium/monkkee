@@ -143,6 +143,22 @@ public class EntryPage extends BasePage {
         return this;
     }
 
+    public EntryPage changeDateInEntry(String dayValue) {
+        driver.findElement(changeDateAndTimeLink).click();
+        driver.findElement(changeDateField).click();
+
+        List<WebElement> allDates = driver.findElements(daysInCalendar);
+        for (WebElement ele : allDates) {
+            String date = ele.getText();
+            if (date.equalsIgnoreCase(dayValue)) {
+                ele.click();
+                break;
+            }
+        }
+        driver.findElement(saveChangeDateAndTimeButton).click();
+        return this;
+    }
+
 
     public EntryPage chooseExistingTagFromList(String tagName) {
         Select tagsList = new Select(driver.findElement(selectTagField));
@@ -166,7 +182,7 @@ public class EntryPage extends BasePage {
         return assignedTag;
     }
 
-    public EntryPage removeTagFromEntry(String tagName){
+    public EntryPage removeTagFromEntry(String tagName) {
         List<WebElement> assignedToEntryTags = driver.findElements(assignedTagToEntry);
         for (WebElement tag : assignedToEntryTags) {
             String tagNameValue = tag.getText();
