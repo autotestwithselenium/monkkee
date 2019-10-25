@@ -36,6 +36,7 @@ public class DiaryPage extends BasePage {
     private By resetLink = By.xpath("//a[text()='reset']");
     private By changeDateAndTimeLink = By.xpath("//input[@placeholder='Select date']");
     private By daysInCalendar = By.xpath("//div[@class='datepicker-days datepicker-mode']//table[@class=' table-condensed']//td");
+    private By settingsLink = By.xpath("//a[@href='#/settings/locale']");
 
     public DiaryPage clickAddEntry() {
         clickToElement(addEntryIcon);
@@ -175,4 +176,11 @@ public class DiaryPage extends BasePage {
 
     }
 
+
+    public SettingsPage openSettings() {
+        driver.findElement(settingsLink).click();
+        animationWait(animationPicture);
+        return new SettingsPage(driver);
+
+    }
 }

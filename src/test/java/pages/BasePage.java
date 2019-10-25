@@ -41,4 +41,8 @@ public class BasePage {
     public void waitInvisibilityOfElementLocated(By locator){
         wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
     }
+
+    public void waitElementToBeClickable(By locator) {
+        wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
 }

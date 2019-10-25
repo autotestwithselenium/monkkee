@@ -10,7 +10,7 @@ import pages.TagsPage;
 public class DiaryEntrySearchTest extends BaseTest {
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void searchEntryByText() {
+    public void searchEntryByTextTest() {
         int numberOfEntries;
         String textMessageFirst = "First Test message";
         String textMessageSecond = "Second Test message";
@@ -39,7 +39,7 @@ public class DiaryEntrySearchTest extends BaseTest {
     }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void searchEntryByTags() {
+    public void searchEntryByTagsTest() {
         int numberOfEntries;
         String textMessage = "First Test message";
         String tagNameFirst = "Poem";
@@ -87,7 +87,7 @@ public class DiaryEntrySearchTest extends BaseTest {
 
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void resetSearchEntryByText() {
+    public void resetSearchEntryByTextTest() {
         int numberOfEntries;
         String textMessageFirst = "First Test message";
         String textMessageSecond = "Second Test message";
@@ -114,7 +114,7 @@ public class DiaryEntrySearchTest extends BaseTest {
     }
 
     @Test
-    public void searchEntryByDate() {
+    public void searchEntryByDateTest() {
         int numberOfEntries;
         String textMessage = "Test message";
         String dayValueFirst = "1";

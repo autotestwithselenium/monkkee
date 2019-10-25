@@ -13,7 +13,7 @@ import static com.sun.javafx.fxml.expression.Expression.not;
 public class DiaryTest extends BaseTest {
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void addTextEntry() {
+    public void addTextEntryTest() {
         String textMessage = "Test message";
         DiaryPage diaryPage = new DiaryPage(driver);
         EntryPage entryPage = new EntryPage(driver);
@@ -25,7 +25,7 @@ public class DiaryTest extends BaseTest {
     }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void addEntryWithImage() {
+    public void addEntryWithImageTest() {
         String imageUrl = "https://content.onliner.by/news/1100x5616/cd4ab5fe98649030080244f3c81857c3.jpeg";
         DiaryPage diaryPage = new DiaryPage(driver);
         EntryPage entryPage = new EntryPage(driver);
@@ -40,7 +40,7 @@ public class DiaryTest extends BaseTest {
     }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class, groups = {"dataDrivenTest"})
-    public void editEntry() {
+    public void editEntryTest() {
         String textMessage = "Test message";
         String editedTextMessage = "Edited Test message";
         DiaryPage diaryPage = new DiaryPage(driver);
@@ -60,7 +60,7 @@ public class DiaryTest extends BaseTest {
     }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void printEntry() {
+    public void printEntryTest() {
         String textMessage = "Test message";
         DiaryPage diaryPage = new DiaryPage(driver);
         EntryPage entryPage = new EntryPage(driver);
@@ -75,7 +75,7 @@ public class DiaryTest extends BaseTest {
 
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void deleteEntry() {
+    public void deleteEntryTest() {
         String textMessage = "Test message";
         DiaryPage diaryPage = new DiaryPage(driver);
         EntryPage entryPage = new EntryPage(driver);
@@ -90,7 +90,7 @@ public class DiaryTest extends BaseTest {
     }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void deleteAllEntries() {
+    public void deleteAllEntriesTest() {
         String textMessage = "Test message";
         DiaryPage diaryPage = new DiaryPage(driver);
         EntryPage entryPage = new EntryPage(driver);
@@ -111,7 +111,7 @@ public class DiaryTest extends BaseTest {
 
 
     @Test
-    public void openOlderEntry() {
+    public void openOlderEntryTest() {
         String textMessageFirst = "Test message First";
         String textMessageSecond = "Test message Second";
         DiaryPage diaryPage = new DiaryPage(driver);
@@ -133,7 +133,7 @@ public class DiaryTest extends BaseTest {
     }
 
     @Test
-    public void openNewerEntry() {
+    public void openNewerEntryTest() {
         String textMessageFirst = "Test message First";
         String textMessageSecond = "Test message Second";
         DiaryPage diaryPage = new DiaryPage(driver);
@@ -155,7 +155,7 @@ public class DiaryTest extends BaseTest {
     }
 
     @Test
-    public void changeDateAndTimeInEntry() {
+    public void changeDateAndTimeInEntryTest() {
         String textMessage = "Test message";
         String dayValue = "1";
         String timeValue = "01:01 AM";
@@ -174,16 +174,9 @@ public class DiaryTest extends BaseTest {
                 .clickBackToEntriesIcon();
     }
 
-    @Test
-    public void manageTags() {
-        DiaryPage diaryPage = new DiaryPage(driver);
-        diaryPage.openTagsList();
-        TagsPage tagsPage = new TagsPage(driver);
-        tagsPage.checkTagPresenseInList("testTag");
-    }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void openDonationPage() {
+    public void openDonationPageTest() {
         DiaryPage diaryPage = new DiaryPage(driver);
         diaryPage.clickDonationButton();
     }

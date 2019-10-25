@@ -8,8 +8,9 @@ import pages.TagsPage;
 
 @Log4j2
 public class DiaryEntryTagsTest extends BaseTest {
+
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void addNewTagInEntry() {
+    public void addNewTagInEntryTest() {
         String textMessage = "Test message";
         String tagName = "testTag";
         DiaryPage diaryPage = new DiaryPage(driver);
@@ -30,7 +31,7 @@ public class DiaryEntryTagsTest extends BaseTest {
     }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void chooseExistingTagInEntry() {
+    public void chooseExistingTagInEntryTest() {
         String textMessage = "Test message";
         String tagName = "testTag1";
         DiaryPage diaryPage = new DiaryPage(driver);
@@ -55,7 +56,7 @@ public class DiaryEntryTagsTest extends BaseTest {
     }
 
     @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void removeTagFromEntry() {
+    public void removeTagFromEntryTest() {
         String textMessage = "Test message";
         String tagName = "testTag";
         DiaryPage diaryPage = new DiaryPage(driver);
@@ -76,5 +77,13 @@ public class DiaryEntryTagsTest extends BaseTest {
         diaryPage.clickEntry(1);
         entryPage.removeTagFromEntry(tagName)
                 .clickBackToEntriesIcon();
+    }
+
+    @Test
+    public void manageTagsTest() {
+        DiaryPage diaryPage = new DiaryPage(driver);
+        diaryPage.openTagsList();
+        TagsPage tagsPage = new TagsPage(driver);
+        tagsPage.checkTagPresenseInList("testTag");
     }
 }
