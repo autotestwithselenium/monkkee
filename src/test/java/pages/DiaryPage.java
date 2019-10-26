@@ -135,7 +135,6 @@ public class DiaryPage extends BasePage {
     public DiaryPage searchEntryByText(String textForSearch, int expectedNumberOfEntries) {
         clickElement(searchField);
         setValueInField(searchField, textForSearch);
-        driver.findElement(searchField).sendKeys(textForSearch);
         clickElement(searchButton);
         waitTextToBe(searchFilterLabel, textForSearch);
         assertEquals(getNumberOfEntries(), expectedNumberOfEntries);
