@@ -1,14 +1,10 @@
 package pages;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import lombok.extern.log4j.Log4j2;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import utils.ElementNotPresentAtPageException;
-
 import static org.testng.AssertJUnit.assertEquals;
 
 @Log4j2

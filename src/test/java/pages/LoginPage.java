@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
+import utils.AllureUtils;
 import utils.ConfigurationFileManager;
 
 @Log4j2
@@ -43,7 +44,9 @@ public class LoginPage extends BasePage {
         try {
             waitUrlToBe(expectedURL);
         } catch (Throwable ex) {
+            AllureUtils.takeScreenshot(driver);
             clickElement(cancelDonationButton);
+            AllureUtils.takeScreenshot(driver);
             waitInvisibilityOfElementLocated(cancelDonationButton);
             waitUrlToBe(expectedURL);
         }

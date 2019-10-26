@@ -2,10 +2,10 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import lombok.extern.log4j.Log4j2;
+import utils.AllureUtils;
 
 @Log4j2
 public class LogoutPage extends BasePage {
@@ -26,7 +26,9 @@ public class LogoutPage extends BasePage {
         try {
             waitPresenceOfElementLocated(emailField);
         } catch (Throwable ex) {
+            AllureUtils.takeScreenshot(driver);
             clickElement(logoutLinkInDonationWindow);
+            AllureUtils.takeScreenshot(driver);
             waitInvisibilityOfElementLocated(logoutLinkInDonationWindow);
             waitPresenceOfElementLocated(emailField);
         }

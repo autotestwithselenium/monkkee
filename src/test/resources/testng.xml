@@ -7,10 +7,6 @@
             <class name="tests.DiaryEntrySearchTest"/>
             <class name="tests.DiaryEntryTagsTest"/>
             <class name="tests.DiaryNavigationTests"/>
-        </classes>
-    </test>
-    <test name="Settings Tests">
-        <classes>
             <class name="tests.SettingsTest"/>
         </classes>
     </test>
