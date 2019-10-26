@@ -16,9 +16,7 @@ public class BaseTest {
     String loginPassword = ConfigurationFileManager.getInstance().getPassword();
     String expectedUrl = ConfigurationFileManager.getInstance().getUrlAfterLogin();
 
-    // @BeforeClass
     @BeforeMethod
-   // @BeforeTest
     public void openDriver() {
         driver = new ChromeDriver(CapabilitiesGenerator.getChromeOptions());
         driver.manage().window().maximize();
@@ -32,9 +30,7 @@ public class BaseTest {
     }
 
 
-    // @AfterClass
-     @AfterMethod
-   // @AfterTest
+    @AfterMethod
     public void closeDriver() {
         new LogoutPage(driver).logOut();
     }

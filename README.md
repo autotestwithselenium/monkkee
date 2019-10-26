@@ -18,7 +18,7 @@ Checklist:
 17. choose newer entry from opened entry +
 18. open donations page "Feed the monkkey" +
 19. settings - choose another language +
-20. change password - validation
+20. change password - validation +
 21. logout +
 
 //TODO

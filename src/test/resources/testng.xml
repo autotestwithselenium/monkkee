@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite thread-count="1" name="Test suite Monkkee" parallel="tests">
+<suite thread-count="2" name="Test suite for Monkkee diary" parallel="tests">
     <test name="Diary Tests">
         <classes>
-            <class name="tests.DiaryTest"/>
+            <class name="tests.DiaryEntryActivitiesTest"/>
+            <class name="tests.DiaryEntrySearchTest"/>
+            <class name="tests.DiaryEntryTagsTest"/>
+            <class name="tests.DiaryNavigationTests"/>
+        </classes>
+    </test>
+    <test name="Settings Tests">
+        <classes>
+            <class name="tests.SettingsTest"/>
         </classes>
     </test>
 </suite>

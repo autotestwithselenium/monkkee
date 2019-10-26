@@ -1,150 +1,135 @@
 package tests;
 
+import io.qameta.allure.Description;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.DiaryPage;
 import lombok.extern.log4j.Log4j2;
-import pages.EntryPage;
-import pages.TagsPage;
+import utils.MyRetryAnalyzer;
 
 @Log4j2
 public class DiaryEntrySearchTest extends BaseTest {
 
-    @Test(retryAnalyzer = MyRetryAnalyzer.class)
-    public void searchEntryByTextTest() {
+    @Test(description = "12 - search entries by text", retryAnalyzer = MyRetryAnalyzer.class, dataProvider = "getTextForSearchAndExpectedNumberOfEntries")
+    @Description("Search entries, with entered text in search form")
+    public void searchEntryByTextTest(String textForSearch, int numberOfEntriesFoundBySearch) {
         int numberOfEntries;
         String textMessageFirst = "First Test message";
         String textMessageSecond = "Second Test message";
-        String searchTextOneEntry = "Second";
-        String searchTextSeveralEntries = "Test";
-        String searchTextNoEntries = "Library";
         DiaryPage diaryPage = new DiaryPage(driver);
-        EntryPage entryPage = new EntryPage(driver);
         numberOfEntries = diaryPage.getNumberOfEntries();
         if (numberOfEntries > 0) {
             diaryPage.deleteAllEntries();
         }
-        diaryPage.clickAddEntry();
-        entryPage
+        diaryPage
+                .clickAddEntry()
                 .addEntry(textMessageFirst)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyEntryMessage(textMessageFirst, 1);
-        diaryPage.clickAddEntry();
-        entryPage
+                .clickBackToEntriesIcon()
+                .verifyEntryMessage(textMessageFirst, 1)
+                .clickAddEntry()
                 .addEntry(textMessageSecond)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyEntryMessage(textMessageSecond, 1);
-        diaryPage.searchEntryByText(searchTextOneEntry, 1);
-        diaryPage.searchEntryByText(searchTextSeveralEntries, 2);
-        diaryPage.searchEntryByText(searchTextNoEntries, 0);
+                .clickBackToEntriesIcon()
+                .verifyEntryMessage(textMessageSecond, 1)
+                .searchEntryByText(textForSearch, numberOfEntriesFoundBySearch);
     }
 
-    @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    @DataProvider
+    public Object[][] getTextForSearchAndExpectedNumberOfEntries() {
+        return new Object[][]{{"Second", 1}, {"Test", 2}, {"Library", 0}};
+    }
+
+
+    @Test(description = "13 - search entry by tags", retryAnalyzer = MyRetryAnalyzer.class)
+    @Description("Search entries by chosen tag")
     public void searchEntryByTagsTest() {
         int numberOfEntries;
         String textMessage = "First Test message";
         String tagNameFirst = "Poem";
         String tagNameSecond = "Article";
         DiaryPage diaryPage = new DiaryPage(driver);
-        EntryPage entryPage = new EntryPage(driver);
-        TagsPage tagsPage = new TagsPage(driver);
 
         numberOfEntries = diaryPage.getNumberOfEntries();
         if (numberOfEntries > 0) {
             diaryPage.deleteAllEntries();
         }
-        diaryPage.openTagsList();
-        boolean tagExistsInList = tagsPage.checkTagPresenseInList(tagNameFirst);
-        if (tagExistsInList) {
-            log.info("Tag exists in Tags list!");
-            tagsPage.deleteTag(tagNameFirst);
-        }
-        tagsPage.clickBackToEntriesIcon();
-        diaryPage.clickAddEntry();
-        entryPage.addEntry(textMessage)
+        diaryPage
+                .openTagsList()
+                .deleteTag(tagNameFirst)
+                .clickBackToEntriesIcon()
+                .clickAddEntry()
+                .addEntry(textMessage)
                 .addNewTag(tagNameFirst)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyTagInEntry(tagNameFirst);
-        diaryPage.openTagsList();
-        tagExistsInList = tagsPage.checkTagPresenseInList(tagNameSecond);
-        if (tagExistsInList) {
-            log.info("Tag exists in Tags list!");
-            tagsPage.deleteTag(tagNameSecond);
-        }
-        tagsPage.clickBackToEntriesIcon();
-        diaryPage.clickAddEntry();
-        entryPage.addEntry(textMessage)
+                .clickBackToEntriesIcon()
+                .verifyTagInEntry(tagNameFirst)
+                .openTagsList()
+                .deleteTag(tagNameSecond)
+                .clickBackToEntriesIcon()
+                .clickAddEntry()
+                .addEntry(textMessage)
                 .addNewTag(tagNameSecond)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyTagInEntry(tagNameSecond);
-        diaryPage.clickAddEntry();
-        entryPage.addEntry(textMessage)
+                .clickBackToEntriesIcon()
+                .verifyTagInEntry(tagNameSecond)
+                .clickAddEntry()
+                .addEntry(textMessage)
                 .chooseExistingTagFromList(tagNameSecond)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyTagInEntry(tagNameSecond);
-        diaryPage.searchEntryByTag(tagNameFirst, 1);
-        diaryPage.searchEntryByTag(tagNameSecond, 2);
+                .clickBackToEntriesIcon()
+                .verifyTagInEntry(tagNameSecond)
+                .searchEntryByTag(tagNameFirst, 1)
+                .searchEntryByTag(tagNameSecond, 2);
     }
 
 
-    @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    @Test(description = "14 - reset filter of search results", retryAnalyzer = MyRetryAnalyzer.class)
+    @Description("Reset filter of search results")
     public void resetSearchEntryByTextTest() {
         int numberOfEntries;
         String textMessageFirst = "First Test message";
         String textMessageSecond = "Second Test message";
         String searchTextOneEntry = "Second";
         DiaryPage diaryPage = new DiaryPage(driver);
-        EntryPage entryPage = new EntryPage(driver);
         numberOfEntries = diaryPage.getNumberOfEntries();
         if (numberOfEntries > 0) {
             diaryPage.deleteAllEntries();
         }
-        diaryPage.clickAddEntry();
-        entryPage
+        diaryPage
+                .clickAddEntry()
                 .addEntry(textMessageFirst)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyEntryMessage(textMessageFirst, 1);
-        diaryPage.clickAddEntry();
-        entryPage
+                .clickBackToEntriesIcon()
+                .verifyEntryMessage(textMessageFirst, 1)
+                .clickAddEntry()
                 .addEntry(textMessageSecond)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyEntryMessage(textMessageSecond, 1);
-        diaryPage.searchEntryByText(searchTextOneEntry, 1);
-        diaryPage.resetSearchResults(2);
-
+                .clickBackToEntriesIcon()
+                .verifyEntryMessage(textMessageSecond, 1)
+                .searchEntryByText(searchTextOneEntry, 1)
+                .resetSearchResults(2);
     }
 
-    @Test
-    public void searchEntryByDateTest() {
+    @Test(description = "15 - choose entries by calendar day", retryAnalyzer = MyRetryAnalyzer.class)
+    @Description("Choose entries by calendar day")    public void searchEntryByDateTest() {
         int numberOfEntries;
         String textMessage = "Test message";
         String dayValueFirst = "1";
         String dayValueSecond = "23";
         DiaryPage diaryPage = new DiaryPage(driver);
-        EntryPage entryPage = new EntryPage(driver);
         numberOfEntries = diaryPage.getNumberOfEntries();
         if (numberOfEntries > 0) {
             diaryPage.deleteAllEntries();
         }
-        diaryPage.clickAddEntry();
-        entryPage
+        diaryPage
+                .clickAddEntry()
                 .addEntry(textMessage)
                 .changeDateInEntry(dayValueFirst)
-                .clickBackToEntriesIcon();
-        diaryPage
+                .clickBackToEntriesIcon()
                 .verifyEntryMessage(textMessage, 1)
-                .clickAddEntry();
-        entryPage
+                .clickAddEntry()
                 .addEntry(textMessage)
                 .changeDateInEntry(dayValueSecond)
-                .clickBackToEntriesIcon();
-        diaryPage
+                .clickBackToEntriesIcon()
                 .verifyEntryMessage(textMessage, 1)
-                .clickAddEntry();
-        entryPage
+                .clickAddEntry()
                 .addEntry(textMessage)
                 .changeDateInEntry(dayValueSecond)
-                .clickBackToEntriesIcon();
-        diaryPage
+                .clickBackToEntriesIcon()
                 .verifyEntryMessage(textMessage, 1)
                 .searchEntryByDate(dayValueFirst, 1)
                 .resetSearchResults(3)

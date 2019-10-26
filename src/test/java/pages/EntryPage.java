@@ -1,19 +1,19 @@
 package pages;
 
 import lombok.extern.log4j.Log4j2;
-import net.bytebuddy.implementation.bytecode.Throw;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
 import static org.testng.Assert.assertTrue;
 import static org.testng.AssertJUnit.assertEquals;
 import static org.testng.AssertJUnit.assertFalse;
+
+import utils.ElementNotPresentAtPageException;
 
 @Log4j2
 public class EntryPage extends BasePage {
@@ -25,7 +25,6 @@ public class EntryPage extends BasePage {
     private By entryArea = By.xpath("//*[@id='editable']");
     private By saveIconDisabled = By.xpath("//*[@class='cke_combo_text cke_combo_inlinelabel cke_savetoggle_text']");
     private By saveIconEnabled = By.xpath("//a[@class='cke_button cke_button__savetoggle cke_button_off']");
-
     private By backToEntriesIcon = By.id("back-to-overview");
     private By addEntryIcon = By.xpath("//*[@title='Create an entry']");
     private By addImageIcon = By.xpath("//*[@title='Image']");
@@ -50,8 +49,8 @@ public class EntryPage extends BasePage {
     public EntryPage addEntry(String message) {
         waitPresenceOfElementLocated(saveIconDisabled);
         waitClickable(entryArea);
-        driver.findElement(entryArea).click();
-        driver.findElement(entryArea).sendKeys(message);
+        clickElement(entryArea);
+        setValueInField(entryArea, message);
         try {
             waitPresenceOfElementLocated(saveIconEnabled);
         } catch (Throwable ex) {
@@ -62,20 +61,19 @@ public class EntryPage extends BasePage {
     }
 
     public EntryPage addImage(String imageLink) {
-        driver.findElement(addImageIcon).click();
-        driver.findElement(imageUrlInputField).click();
-        driver.findElement(imageUrlInputField).sendKeys(imageLink);
-        driver.findElement(confirmButtonInImageForm).click();
-        wait.until(ExpectedConditions.textToBe(saveIconDisabled, "saved"));
+        clickElement(addImageIcon);
+        clickElement(imageUrlInputField);
+        setValueInField(imageUrlInputField, imageLink);
+        clickElement(confirmButtonInImageForm);
+        waitTextToBe(saveIconDisabled, "saved");
         assertEquals(driver.findElement(saveIconDisabled).getText(), "saved");
         return this;
     }
 
     public EntryPage editEntry(String message) {
-        driver.findElement(entryArea).click();
-        driver.findElement(entryArea).clear();
-        driver.findElement(entryArea).sendKeys(message);
-        wait.until(ExpectedConditions.textToBe(saveIconDisabled, "saved"));
+        clickElement(entryArea);
+        setValueInField(entryArea, message);
+        waitTextToBe(saveIconDisabled, "saved");
         assertEquals(driver.findElement(saveIconDisabled).getText(), "saved");
         return this;
     }
@@ -90,41 +88,40 @@ public class EntryPage extends BasePage {
         return this;
     }
 
-
-    public EntryPage clickBackToEntriesIcon() {
-        driver.findElement(backToEntriesIcon).click();
+    public DiaryPage clickBackToEntriesIcon() {
+        clickElement(backToEntriesIcon);
         animationWait(animationPicture);
         waitPresenceOfElementLocated(addEntryIcon);
-        return this;
+        return new DiaryPage(driver);
     }
 
     public EntryPage addNewTag(String tagName) {
-        driver.findElement(newTagField).click();
-        driver.findElement(newTagField).sendKeys(tagName);
-        driver.findElement(createNewTagButton).click();
+        clickElement(newTagField);
+        setValueInField(newTagField, tagName);
+        clickElement(createNewTagButton);
         WebElement tagElement = driver.findElement(By.linkText(tagName));
-        wait.until(ExpectedConditions.visibilityOf(tagElement));
+        waitVisibilityOf(tagElement);
         assertTrue(checkIfTagIsAddedInEntry(tagName));
         return this;
     }
 
     public EntryPage openOlderEntry(String messageText) {
-        driver.findElement(openOlderEntryLinkEnabled).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(openNewerEntryLinkEnabled));
+        clickElement(openOlderEntryLinkEnabled);
+        waitVisibilityOfElementLocated(openNewerEntryLinkEnabled);
         assertEquals(messageText, driver.findElement(entryArea).getText());
         return this;
     }
 
     public EntryPage openNewerEntry(String messageText) {
-        driver.findElement(openNewerEntryLinkEnabled).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(openNewerEntryLinkDisabled));
+        clickElement(openNewerEntryLinkEnabled);
+        waitVisibilityOfElementLocated(openNewerEntryLinkDisabled);
         assertEquals(messageText, driver.findElement(entryArea).getText());
         return this;
     }
 
     public EntryPage changeDateAndTimeInEntry(String dayValue, String timeValue, String expectedDateAndTime) {
-        driver.findElement(changeDateAndTimeLink).click();
-        driver.findElement(changeDateField).click();
+        clickElement(changeDateAndTimeLink);
+        clickElement(changeDateField);
 
         List<WebElement> allDates = driver.findElements(daysInCalendar);
         for (WebElement ele : allDates) {
@@ -135,17 +132,16 @@ public class EntryPage extends BasePage {
             }
         }
 
-        driver.findElement(changeTimeField).click();
-        driver.findElement(changeTimeField).clear();
-        driver.findElement(changeTimeField).sendKeys(timeValue);
-        driver.findElement(saveChangeDateAndTimeButton).click();
+        clickElement(changeTimeField);
+        setValueInField(changeTimeField, timeValue);
+        clickElement(saveChangeDateAndTimeButton);
         assertEquals(expectedDateAndTime, driver.findElement(dateAndTimeField).getText());
         return this;
     }
 
     public EntryPage changeDateInEntry(String dayValue) {
-        driver.findElement(changeDateAndTimeLink).click();
-        driver.findElement(changeDateField).click();
+        clickElement(changeDateAndTimeLink);
+        clickElement(changeDateField);
 
         List<WebElement> allDates = driver.findElements(daysInCalendar);
         for (WebElement ele : allDates) {
@@ -155,7 +151,8 @@ public class EntryPage extends BasePage {
                 break;
             }
         }
-        driver.findElement(saveChangeDateAndTimeButton).click();
+
+        clickElement(saveChangeDateAndTimeButton);
         return this;
     }
 
@@ -163,7 +160,7 @@ public class EntryPage extends BasePage {
     public EntryPage chooseExistingTagFromList(String tagName) {
         Select tagsList = new Select(driver.findElement(selectTagField));
         tagsList.selectByVisibleText(tagName);
-        driver.findElement(confirmAddingExistingTagButton).click();
+        clickElement(confirmAddingExistingTagButton);
         assertTrue(checkIfTagIsAddedInEntry(tagName));
         return this;
     }

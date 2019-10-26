@@ -2,13 +2,10 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import lombok.extern.log4j.Log4j2;
-
-import java.util.List;
 
 @Log4j2
 public class LogoutPage extends BasePage {
@@ -26,17 +23,12 @@ public class LogoutPage extends BasePage {
     public void logOut() {
 
         driver.findElement(logoutLink).click();
-        //   List<WebElement> elements = driver.findElements(logoutLinkInDonationWindow);
-        //    if (elements.size()>0){
-        //        driver.findElement(logoutLinkInDonationWindow).click();
-        //   }
-        //driver.findElement(logoutLink).click();
-
         try {
-            wait.until(ExpectedConditions.presenceOfElementLocated(emailField));
+            waitPresenceOfElementLocated(emailField);
         } catch (Throwable ex) {
-            driver.findElement(logoutLinkInDonationWindow).click();
-            wait.until(ExpectedConditions.presenceOfElementLocated(emailField));
+            clickElement(logoutLinkInDonationWindow);
+            waitInvisibilityOfElementLocated(logoutLinkInDonationWindow);
+            waitPresenceOfElementLocated(emailField);
         }
         String actualURLAfterLogOut = driver.getCurrentUrl();
         log.info("Expected URL after logout: " + expectedURLAfterLogOut);

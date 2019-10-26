@@ -1,89 +1,75 @@
 package tests;
 
+import io.qameta.allure.Description;
 import org.testng.annotations.Test;
 import pages.DiaryPage;
 import lombok.extern.log4j.Log4j2;
-import pages.EntryPage;
 import pages.TagsPage;
+import utils.MyRetryAnalyzer;
 
 @Log4j2
 public class DiaryEntryTagsTest extends BaseTest {
 
-    @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    @Test(description = "9 - add new tag in entry", retryAnalyzer = MyRetryAnalyzer.class)
+    @Description("Add new tag in new entry (new tag can be created, when new entry is created)")
     public void addNewTagInEntryTest() {
         String textMessage = "Test message";
         String tagName = "testTag";
         DiaryPage diaryPage = new DiaryPage(driver);
-        EntryPage entryPage = new EntryPage(driver);
-        TagsPage tagsPage = new TagsPage(driver);
-        diaryPage.openTagsList();
-        boolean tagExistsInList = tagsPage.checkTagPresenseInList(tagName);
-        if (tagExistsInList) {
-            log.info("Tag exists in Tags list!");
-            tagsPage.deleteTag(tagName);
-        }
-        tagsPage.clickBackToEntriesIcon();
-        diaryPage.clickAddEntry();
-        entryPage.addEntry(textMessage)
+        diaryPage
+                .openTagsList()
+                .deleteTag(tagName)
+                .clickBackToEntriesIcon()
+                .clickAddEntry()
+                .addEntry(textMessage)
                 .addNewTag(tagName)
-                .clickBackToEntriesIcon();
-        diaryPage.verifyTagInEntry(tagName);
+                .clickBackToEntriesIcon()
+                .verifyTagInEntry(tagName);
     }
 
-    @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    @Test(description = "10 - choose existing tag for entry", retryAnalyzer = MyRetryAnalyzer.class)
+    @Description("Choose existing tag, when new entry is created")
     public void chooseExistingTagInEntryTest() {
         String textMessage = "Test message";
         String tagName = "testTag1";
         DiaryPage diaryPage = new DiaryPage(driver);
-        EntryPage entryPage = new EntryPage(driver);
         TagsPage tagsPage = new TagsPage(driver);
-        diaryPage.openTagsList();
-        boolean tagExistsInList = tagsPage.checkTagPresenseInList(tagName);
-        tagsPage.clickBackToEntriesIcon();
-        if (tagExistsInList == false) { //adding new entry with new tag
-            diaryPage.clickAddEntry();
-            entryPage.addEntry(textMessage)
-                    .addNewTag(tagName)
-                    .clickBackToEntriesIcon();
-            diaryPage.verifyTagInEntry(tagName);
-        }
-        //add new entry, choose existing tag
-        diaryPage.clickAddEntry();
-        entryPage.addEntry(textMessage)
-                .chooseExistingTagFromList(tagName)
+        diaryPage
+                .openTagsList()
                 .clickBackToEntriesIcon();
-        diaryPage.verifyTagInEntry(tagName);
+        if (tagsPage.checkTagPresenseInList(tagName) == false) { //adding new entry with new tag
+            diaryPage
+                    .clickAddEntry()
+                    .addEntry(textMessage)
+                    .addNewTag(tagName)
+                    .clickBackToEntriesIcon()
+                    .verifyTagInEntry(tagName);
+        }
+        diaryPage   //add new entry, choose existing tag
+                .clickAddEntry()
+                .addEntry(textMessage)
+                .chooseExistingTagFromList(tagName)
+                .clickBackToEntriesIcon()
+                .verifyTagInEntry(tagName);
     }
 
-    @Test(retryAnalyzer = MyRetryAnalyzer.class)
+    @Test(description = "11 - remove tag in entry", retryAnalyzer = MyRetryAnalyzer.class)
+    @Description("Remove added earlier tag from entry")
     public void removeTagFromEntryTest() {
         String textMessage = "Test message";
         String tagName = "testTag";
         DiaryPage diaryPage = new DiaryPage(driver);
-        EntryPage entryPage = new EntryPage(driver);
-        TagsPage tagsPage = new TagsPage(driver);
-        diaryPage.openTagsList();
-        boolean tagExistsInList = tagsPage.checkTagPresenseInList(tagName);
-        if (tagExistsInList) {
-            log.info("Tag exists in Tags list!");
-            tagsPage.deleteTag(tagName);
-        }
-        tagsPage.clickBackToEntriesIcon();
-        diaryPage.clickAddEntry();
-        entryPage.addEntry(textMessage)
+        diaryPage
+                .openTagsList()
+                .deleteTag(tagName)
+                .clickBackToEntriesIcon()
+                .clickAddEntry()
+                .addEntry(textMessage)
                 .addNewTag(tagName)
+                .clickBackToEntriesIcon()
+                .verifyTagInEntry(tagName)
+                .clickEntry(1)
+                .removeTagFromEntry(tagName)
                 .clickBackToEntriesIcon();
-        diaryPage.verifyTagInEntry(tagName);
-        diaryPage.clickEntry(1);
-        entryPage.removeTagFromEntry(tagName)
-                .clickBackToEntriesIcon();
-    }
-
-    @Test
-    public void manageTagsTest() {
-        DiaryPage diaryPage = new DiaryPage(driver);
-        diaryPage.openTagsList();
-        TagsPage tagsPage = new TagsPage(driver);
-        tagsPage.checkTagPresenseInList("testTag");
     }
 }

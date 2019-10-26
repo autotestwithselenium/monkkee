@@ -40,6 +40,7 @@ public class TagsPage extends BasePage {
     }
 
     public TagsPage deleteTag(String nameOfTag){
+        if (checkTagPresenseInList(nameOfTag)){
         int numberOfTagInList = 0;
 
         log.info("tagName: " + tagName);
@@ -53,15 +54,14 @@ public class TagsPage extends BasePage {
 
         driver.findElements(deleteTagButton).get(numberOfTagInList).click();
         Alert alert = driver.switchTo().alert();
-        alert.accept();
+        alert.accept();}
         return this;
     }
 
-    public TagsPage clickBackToEntriesIcon() {
+    public DiaryPage clickBackToEntriesIcon() {
         driver.findElement(backToEntriesIcon).click();
         animationWait(animationPicture);
         waitPresenceOfElementLocated(addEntryIcon);
-        return this;
+        return new DiaryPage(driver);
     }
-
 }
