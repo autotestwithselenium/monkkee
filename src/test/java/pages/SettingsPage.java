@@ -13,7 +13,7 @@ public class SettingsPage extends BasePage {
     public SettingsPage(WebDriver driver) {
         super(driver);
     }
-    private By languageSettingsLink = By.xpath("//a[@href='#/settings/locale']/i[@class='icon-cog icon-light']");
+    private By languageSettingsLink = By.xpath("//a[@href='#/settings/locale']");
     private By messageAboutChangedLanguage = By.xpath("//div[@class='alert alert-success']");
     private By selectLanguage = By.name("selectLocale");
     private By confirmChangeLanguageButton = By.xpath("//button[@type='submit']");
