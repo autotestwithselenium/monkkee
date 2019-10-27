@@ -2,10 +2,12 @@ package pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 import utils.AllureUtils;
 import lombok.extern.log4j.Log4j2;
+
 import static org.testng.AssertJUnit.assertEquals;
 
 @Log4j2
@@ -13,6 +15,7 @@ public class SettingsPage extends BasePage {
     public SettingsPage(WebDriver driver) {
         super(driver);
     }
+
     private By languageSettingsLink = By.xpath("//a[@href='#/settings/locale']");
     private By messageAboutChangedLanguage = By.xpath("//div[@class='alert alert-success']");
     private By selectLanguage = By.name("selectLocale");
@@ -30,11 +33,12 @@ public class SettingsPage extends BasePage {
 
     @Step("Choose the following language: '{language}' in settings")
     public SettingsPage chooseLanguage(String language, String languageText) {
+        waitClickable(languageSettingsLink);
         clickElement(languageSettingsLink);
         waitClickable(selectLanguage);
         Select tagsList = new Select(driver.findElement(selectLanguage));
         tagsList.selectByVisibleText(language);
-        log.info("Chosen value of language in list: "+language);
+        log.info("Chosen value of language in list: " + language);
         clickElement(confirmChangeLanguageButton);
         waitPresenceOfElementLocated(messageAboutChangedLanguage);
         assertEquals(driver.findElement(messageAboutChangedLanguage).getText(), languageText);
@@ -44,7 +48,7 @@ public class SettingsPage extends BasePage {
 
     @Step("Change password, set incorrect value in field 'Old password'")
     public SettingsPage changePasswordWithIncorrectExistingPassword(String existingPassword, String newPassword) {
-        log.info("Value set infield 'Old password': "+existingPassword);
+        log.info("Value set infield 'Old password': " + existingPassword);
         clickElement(openPasswordSettingsLink);
         clickElement(oldPasswordField);
         setValueInField(oldPasswordField, existingPassword);
