@@ -33,7 +33,6 @@ public class SettingsPage extends BasePage {
 
     @Step("Choose the following language: '{language}' in settings")
     public SettingsPage chooseLanguage(String language, String languageText) {
-        waitClickable(languageSettingsLink);
         clickElement(languageSettingsLink);
         waitClickable(selectLanguage);
         Select tagsList = new Select(driver.findElement(selectLanguage));

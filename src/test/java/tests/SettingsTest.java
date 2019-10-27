@@ -10,22 +10,17 @@ import utils.MyRetryAnalyzer;
 @Log4j2
 public class SettingsTest extends BaseTest {
 
-    @Test(description = "20 - change language settings", dataProvider = "getDataForLanguageSettings", retryAnalyzer = MyRetryAnalyzer.class)
+    @Test(description = "20 - change language settings", retryAnalyzer = MyRetryAnalyzer.class)
     @Description("Choose another language in settings")
-    public void changeLanguageSettingsTest(String language, String warningMessage) {
+    public void changeLanguageSettingsTest() {
         DiaryPage diaryPage = new DiaryPage(driver);
         diaryPage
                 .openSettings()
-                .chooseLanguage(language, warningMessage)
+                .chooseLanguage("Français", "Modifications enregistrées")
+                .chooseLanguage("Portuguese", "Seu idioma foi alterado com sucesso")
+                .chooseLanguage("Deutsch", "Deine Spracheinstellung wurde erfolgreich geändert")
+                .chooseLanguage("English", "Your language has been changed successfully")
                 .openDiaryPage();
-    }
-
-    @DataProvider
-    public Object[][] getDataForLanguageSettings() {
-        return new Object[][]{{"Français", "Modifications enregistrées"},
-                {"Portuguese", "Seu idioma foi alterado com sucesso"},
-                {"Deutsch", "Deine Spracheinstellung wurde erfolgreich geändert"},
-                {"English", "Your language has been changed successfully"}};
     }
 
     @Test(description = "22 - change password settings, enter incorrect existing password", retryAnalyzer = MyRetryAnalyzer.class)

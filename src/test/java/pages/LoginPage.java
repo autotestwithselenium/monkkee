@@ -47,7 +47,6 @@ public class LoginPage extends BasePage {
             log.info("English is set");
         } else {
             log.info("Setting value: " + driver.findElement(settingsLink).getText());
-            waitClickable(settingsLink);
             clickElement(settingsLink);
             new SettingsPage(driver)
                     .chooseLanguage("English", "Your language has been changed successfully")
