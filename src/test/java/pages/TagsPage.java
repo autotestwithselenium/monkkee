@@ -15,7 +15,6 @@ public class TagsPage extends BasePage {
     public TagsPage(WebDriver driver) {
         super(driver);
     }
-
     private By tagName = By.xpath("//tr[@ng-repeat='tag in tags']/td[1]");
     private By deleteTagButton = By.xpath("//a[@class='btn btn-primary' and @ng-click='deleteTag(tag)']");
     private By backToEntriesIcon = By.xpath("//a[@title='Back to overview']");
