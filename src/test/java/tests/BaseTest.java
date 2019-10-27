@@ -22,11 +22,11 @@ public class BaseTest {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
         LoginPage loginPage = new LoginPage(driver);
-
         loginPage
                 .openPage()
                 .login(loginName, loginPassword)
-                .checkLogin(expectedUrl);
+                .checkLogin(expectedUrl)
+                .checkLanguage();
     }
 
 

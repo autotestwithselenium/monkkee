@@ -1,6 +1,7 @@
 Checklist:
-1. successful login +
-2. add entry, text only +
+0. successful login +
+1. add entry with different values +
+2. add empty entry +
 3. add entry with image +
 4. edit entry +
 5. print entry +
@@ -12,8 +13,8 @@ Checklist:
 11. search entry by value +
 12. search entry by tags +
 13. reset search results +
-14. choose entries by calendar date +
-15. change date/time in entry +
+14. choose entries by calendar day +
+15. change day/time in entry +
 16. choose older entry from opened entry +
 17. choose newer entry from opened entry +
 18. open donations page "Feed the monkkey" +
@@ -25,9 +26,9 @@ Checklist:
 
 1. Remove excessive System.setProperty +
 2. Read login/pass/url from property file +
-3. Add descriptions into tests
+3. Add descriptions into tests +
 4. Add reasons into assertions
-5. Move WebDriverWait into BasePage + partly
-6. User 'Reformat code'
+5. Move WebDriverWait into BasePage +
+6. User 'Reformat code' +
 7. Add wrapper for click +
-8. Add testng.xml for parallel run + partly
+8. Add testng.xml for parallel run +

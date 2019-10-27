@@ -18,6 +18,7 @@ public class LoginPage extends BasePage {
     private By loginButton = By.xpath("//*[@class='btn btn-primary']");
     private By animationPicture = By.xpath("//img[@class='animation']");
     private By cancelDonationButton = By.xpath("//button[@custom-modal-close='login()']");
+    private By settingsLink = By.xpath("//a[@href='#/settings/locale']");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -40,7 +41,21 @@ public class LoginPage extends BasePage {
         return this;
     }
 
-    public void checkLogin(String expectedURL) {
+
+    public LoginPage checkLanguage() {
+        if (driver.findElement(settingsLink).getText().equals("Settings")) {
+            log.info("English is set");
+        } else {
+            log.info("Setting value: " + driver.findElement(settingsLink).getText());
+            clickElement(settingsLink);
+            new SettingsPage(driver)
+                    .chooseLanguage("English", "Your language has been changed successfully")
+                    .openDiaryPage();
+        }
+        return this;
+    }
+
+    public LoginPage checkLogin(String expectedURL) {
         try {
             waitUrlToBe(expectedURL);
         } catch (Throwable ex) {
@@ -51,5 +66,7 @@ public class LoginPage extends BasePage {
             waitUrlToBe(expectedURL);
         }
         Assert.assertEquals(driver.getCurrentUrl(), expectedURL);
+        return this;
     }
+
 }

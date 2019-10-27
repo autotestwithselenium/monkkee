@@ -4,7 +4,6 @@ import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
@@ -26,17 +25,17 @@ public class EntryPage extends BasePage {
     private By saveIconDisabled = By.xpath("//*[@class='cke_combo_text cke_combo_inlinelabel cke_savetoggle_text']");
     private By saveIconEnabled = By.xpath("//a[@class='cke_button cke_button__savetoggle cke_button_off']");
     private By backToEntriesIcon = By.id("back-to-overview");
-    private By addEntryIcon = By.xpath("//*[@title='Create an entry']");
-    private By addImageIcon = By.xpath("//*[@title='Image']");
+    private By addEntryIcon = By.xpath("//*[@id='create-entry']");
+    private By addImageIcon = By.xpath("//*[@class='cke_button cke_button__image cke_button_off']");
     private By imageUrlInputField = By.xpath("//input[@class='cke_dialog_ui_input_text']");
-    private By confirmButtonInImageForm = By.xpath("//span[text()='OK']");
+    private By confirmButtonInImageForm = By.xpath("//a[@class='cke_dialog_ui_button cke_dialog_ui_button_ok']/span[@class='cke_dialog_ui_button']");
     private By newTagField = By.xpath("//input[@id='new-tag']");
     private By createNewTagButton = By.xpath("//button[@id='assign-new-tag']");
     private By animationPicture = By.xpath("//img[@class='animation']");
-    private By openOlderEntryLinkEnabled = By.xpath("//a[@class='btn btn-primary' and @title='Older']");
-    private By openNewerEntryLinkEnabled = By.xpath("//a[@class='btn btn-primary' and @title='Newer']");
-    private By openNewerEntryLinkDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @title='Newer']");
-    private By changeDateAndTimeLink = By.xpath("//a[@title='Change entry date/time']");
+    private By openOlderEntryLinkEnabled = By.xpath("//a[@class='btn btn-primary' and @ng-class='model.nextClass']");
+    private By openNewerEntryLinkEnabled = By.xpath("//a[@class='btn btn-primary' and @ng-class='model.previousClass']");
+    private By openNewerEntryLinkDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @ng-class='model.previousClass']");
+    private By changeDateAndTimeLink = By.xpath("//a[@ng-click='switchToDateEditMode()']");
     private By changeDateField = By.id("date");
     private By changeTimeField = By.id("time");
     private By saveChangeDateAndTimeButton = By.xpath("//button[@ng-click='changeDate()']");
@@ -73,6 +72,19 @@ public class EntryPage extends BasePage {
     public EntryPage editEntry(String message) {
         clickElement(entryArea);
         setValueInField(entryArea, message);
+        waitTextToBe(saveIconDisabled, "saved");
+        assertEquals(driver.findElement(saveIconDisabled).getText(), "saved");
+        return this;
+    }
+
+    public EntryPage verifyAddedValueInEntry(String message) {
+        assertEquals(driver.findElement(entryArea).getText(), message);
+        return this;
+    }
+
+    public EntryPage clearEntry() {
+        clickElement(entryArea);
+        driver.findElement(entryArea).clear();
         waitTextToBe(saveIconDisabled, "saved");
         assertEquals(driver.findElement(saveIconDisabled).getText(), "saved");
         return this;
@@ -156,7 +168,6 @@ public class EntryPage extends BasePage {
         return this;
     }
 
-
     public EntryPage chooseExistingTagFromList(String tagName) {
         Select tagsList = new Select(driver.findElement(selectTagField));
         tagsList.selectByVisibleText(tagName);
@@ -164,7 +175,6 @@ public class EntryPage extends BasePage {
         assertTrue(checkIfTagIsAddedInEntry(tagName));
         return this;
     }
-
 
     public boolean checkIfTagIsAddedInEntry(String tagName) {
         boolean assignedTag = false;

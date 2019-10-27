@@ -26,12 +26,12 @@ public class DiaryPage extends BasePage {
     private By deleteIconDisabled = By.xpath("//a[@class='btn btn-primary disabled' and @id='delete-entries']");
     private By printIcon = By.xpath("//a[@ng-click='printEntries()']");
     private By donationButton = By.xpath("//a[@class='donate-button ng-scope' and text()='Feed the monkkee']");
-    private By manageTagsLink = By.xpath("//a[text() = 'Manage tags']");
-    private By searchField = By.xpath("//input[@placeholder='Search']");
+    private By manageTagsLink = By.xpath("//a[@href='#/tags']");
+    private By searchField = By.xpath("//input[@id='appendedInputButton']");
     private By searchFilterLabel = By.xpath("//span[@class='ng-binding search-parameter']");
-    private By searchButton = By.xpath("//button[@title='Search']");
-    private By resetLink = By.xpath("//a[text()='reset']");
-    private By changeDateAndTimeLink = By.xpath("//input[@placeholder='Select date']");
+    private By searchButton = By.xpath("//button[@class='btn btn-primary input-group-addon' and @type='submit']");
+    private By resetLink = By.xpath("//a[@id='reset-search']");
+    private By changeDateAndTimeLink = By.xpath("//input[@id='datepicker']");
     private By daysInCalendar = By.xpath("//div[@class='datepicker-days datepicker-mode']//table[@class=' table-condensed']//td");
     private By settingsLink = By.xpath("//a[@href='#/settings/locale']");
 

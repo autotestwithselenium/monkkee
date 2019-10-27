@@ -7,7 +7,7 @@ import utils.MyRetryAnalyzer;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class DiaryNavigationTests extends BaseTest {
+public class DiaryNavigationTest extends BaseTest {
     @Test(description = "16 - open older entry", retryAnalyzer = MyRetryAnalyzer.class)
     @Description("Open older entry from opened entry")
     public void openOlderEntryTest() {
