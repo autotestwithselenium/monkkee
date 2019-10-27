@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,6 +26,7 @@ public class LoginPage extends BasePage {
         wait = new WebDriverWait(driver, 10);
     }
 
+    @Step("Login to monkkee")
     public LoginPage login(String username, String password) {
         log.info("username: " + username);
         log.info("password: " + password);
@@ -35,13 +37,14 @@ public class LoginPage extends BasePage {
         return this;
     }
 
+    @Step("Open monkkee URL")
     public LoginPage openPage() {
         log.info("login URL: " + URL);
         driver.get(URL);
         return this;
     }
 
-
+    @Step("Check, if English language is set in settings")
     public LoginPage checkLanguage() {
         if (driver.findElement(settingsLink).getText().equals("Settings")) {
             log.info("English is set");
@@ -55,6 +58,7 @@ public class LoginPage extends BasePage {
         return this;
     }
 
+    @Step("Check, if login is successful")
     public LoginPage checkLogin(String expectedURL) {
         try {
             waitUrlToBe(expectedURL);
@@ -65,7 +69,7 @@ public class LoginPage extends BasePage {
             waitInvisibilityOfElementLocated(cancelDonationButton);
             waitUrlToBe(expectedURL);
         }
-        Assert.assertEquals(driver.getCurrentUrl(), expectedURL);
+        Assert.assertEquals(driver.getCurrentUrl(), expectedURL, "After login URL should be as expected - entries URL");
         return this;
     }
 

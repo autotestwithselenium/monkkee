@@ -2,7 +2,6 @@ package pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Select;
 import utils.AllureUtils;
@@ -40,7 +39,7 @@ public class SettingsPage extends BasePage {
         log.info("Chosen value of language in list: " + language);
         clickElement(confirmChangeLanguageButton);
         waitPresenceOfElementLocated(messageAboutChangedLanguage);
-        assertEquals(driver.findElement(messageAboutChangedLanguage).getText(), languageText);
+        assertEquals("Message about changed language in settings is the same as expected", driver.findElement(messageAboutChangedLanguage).getText(), languageText);
         AllureUtils.takeScreenshot(driver);
         return this;
     }
@@ -60,7 +59,7 @@ public class SettingsPage extends BasePage {
 
         clickElement(confirmChangePasswordButton);
         waitPresenceOfElementLocated(validationMessageForFieldOldPassword);
-        assertEquals(driver.findElement(validationMessageForFieldOldPassword).getText(), "Old password is wrong");
+        assertEquals("After entering incorrect old password validation message should be as expected", driver.findElement(validationMessageForFieldOldPassword).getText(), "Old password is wrong");
         AllureUtils.takeScreenshot(driver);
         return this;
     }

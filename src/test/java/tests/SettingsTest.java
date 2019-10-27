@@ -1,7 +1,6 @@
 package tests;
 
 import io.qameta.allure.Description;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.DiaryPage;
 import lombok.extern.log4j.Log4j2;

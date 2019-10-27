@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +22,7 @@ public class TagsPage extends BasePage {
     private By animationPicture = By.xpath("//img[@class='animation']");
     private By addEntryIcon = By.xpath("//*[@title='Create an entry']");
 
-
+    @Step("Check, if tag exists in tags list")
     public boolean checkTagPresenseInList(String nameOfTag) {
         boolean tagExistsInList = false;
         int numberOfTagInList = 0;
@@ -39,25 +40,28 @@ public class TagsPage extends BasePage {
         return tagExistsInList;
     }
 
-    public TagsPage deleteTag(String nameOfTag){
-        if (checkTagPresenseInList(nameOfTag)){
-        int numberOfTagInList = 0;
+    @Step("Delete tag")
+    public TagsPage deleteTag(String nameOfTag) {
+        if (checkTagPresenseInList(nameOfTag)) {
+            int numberOfTagInList = 0;
 
-        log.info("tagName: " + tagName);
-        List<WebElement> tagNames = driver.findElements(tagName);
-        for (WebElement name : tagNames) {
-            if (name.getText().equals(nameOfTag)) {
-                break;
+            log.info("tagName: " + tagName);
+            List<WebElement> tagNames = driver.findElements(tagName);
+            for (WebElement name : tagNames) {
+                if (name.getText().equals(nameOfTag)) {
+                    break;
+                }
+                numberOfTagInList++;
             }
-            numberOfTagInList++;
-        }
 
-        driver.findElements(deleteTagButton).get(numberOfTagInList).click();
-        Alert alert = driver.switchTo().alert();
-        alert.accept();}
+            driver.findElements(deleteTagButton).get(numberOfTagInList).click();
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+        }
         return this;
     }
 
+    @Step("Open diary page with entries")
     public DiaryPage clickBackToEntriesIcon() {
         driver.findElement(backToEntriesIcon).click();
         animationWait(animationPicture);
